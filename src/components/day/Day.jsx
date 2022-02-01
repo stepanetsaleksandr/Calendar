@@ -1,27 +1,55 @@
 import React from "react";
+import { Component } from "react/cjs/react.production.min";
 import Hour from "../hour/Hour";
 
 import "./day.scss";
 
-const Day = ({ dataDay, dayEvents }) => {
-  const hours = Array(24)
-    .fill()
-    .map((val, index) => index);
+class Day extends Component {
+  render() {
+    const hours = Array(24)
+      .fill()
+      .map((val, index) => index);
 
-  return (
-    <div className="calendar__day" data-day={dataDay}>
-      {hours.map((hour) => {
-        //getting all events from the day we will render
-        const hourEvents = dayEvents.filter(
-          (event) => event.dateFrom.getHours() === hour
-        );
+    return (
+      <div className="calendar__day" data-day={this.props.dataDay}>
+        {hours.map((hour) => {
+          //getting all events from the day we will render
+          const hourEvents = this.props.dayEvents.filter(
+            (event) => event.dateFrom.getHours() === hour
+          );
 
-        return (
-          <Hour key={dataDay + hour} dataHour={hour} hourEvents={hourEvents} />
-        );
-      })}
-    </div>
-  );
-};
+          return (
+            <Hour
+              key={this.props.dataDay + hour}
+              dataHour={hour}
+              hourEvents={hourEvents}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
+
+// const Day = ({ dataDay, dayEvents }) => {
+//   const hours = Array(24)
+//     .fill()
+//     .map((val, index) => index);
+
+//   return (
+//     <div className="calendar__day" data-day={dataDay}>
+//       {hours.map((hour) => {
+//         //getting all events from the day we will render
+//         const hourEvents = dayEvents.filter(
+//           (event) => event.dateFrom.getHours() === hour
+//         );
+
+//         return (
+//           <Hour key={dataDay + hour} dataHour={hour} hourEvents={hourEvents} />
+//         );
+//       })}
+//     </div>
+//   );
+// };
 
 export default Day;
