@@ -7,6 +7,7 @@ import "./header.scss";
 
 class Header extends Component {
   render() {
+    console.log(this.props);
     return (
       <header className="header">
         <button className="button create-event-btn">
@@ -31,7 +32,7 @@ class Header extends Component {
             <i className="fas fa-chevron-right"></i>
           </button>
 
-          <span className="navigation__displayed-month"></span>
+          <span className="navigation__displayed-month"> </span>
         </div>
       </header>
     );

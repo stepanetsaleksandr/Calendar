@@ -11,7 +11,7 @@ const App = () => {
 
   return (
     <>
-      <Header />
+      <Header weekDates={weekDates} />
       <Calendar weekDates={weekDates} />
     </>
   );
