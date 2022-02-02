@@ -20,8 +20,11 @@
   }
 
   &__nav-icon {
-    font-size: 16px;
+    font-size: 18px;
     margin-left: 20px;
+    font-weight: 700;
+    text-shadow: 0px 2px 2px #6eaac0;
+    opacity: 0.6;
   }
 
   &__displayed-month {

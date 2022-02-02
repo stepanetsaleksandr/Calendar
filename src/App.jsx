@@ -19,9 +19,29 @@ const App = () => {
     setWeekStartDate(new Date());
   };
 
+  const getNextWeek = (weekStartDate) =>
+    new Date(
+      weekStartDate.getFullYear(),
+      weekStartDate.getMonth(),
+      weekStartDate.getDate() + 7
+    );
+
+  const getPreviousWeek = (weekStartDate) =>
+    new Date(
+      weekStartDate.getFullYear(),
+      weekStartDate.getMonth(),
+      weekStartDate.getDate() - 7
+    );
   return (
     <>
-      <Header weekDates={weekDates} getCurrWeek={getCurrWeek} />
+      <Header
+        weekDates={weekDates}
+        weekStartDate={weekStartDate}
+        setWeekStartDate={setWeekStartDate}
+        getCurrWeek={getCurrWeek}
+        getNextWeek={getNextWeek}
+        getPreviousWeek={getPreviousWeek}
+      />
       <Calendar weekDates={weekDates} />
     </>
   );
