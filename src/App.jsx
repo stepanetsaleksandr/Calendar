@@ -7,7 +7,7 @@ import {
   getNextWeek,
   getPreviousWeek,
 } from "../src/utils/dateUtils.js";
-
+import events from "./gateway/events.js";
 import "./common.scss";
 
 const App = () => {
@@ -42,7 +42,7 @@ const App = () => {
         getNextWeek={getNextWeek}
         getPreviousWeek={getPreviousWeek}
       />
-      <Calendar weekDates={weekDates} />
+      <Calendar weekDates={weekDates} events={events} />
     </>
   );
 };

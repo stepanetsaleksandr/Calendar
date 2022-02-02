@@ -18,11 +18,13 @@
     display: flex;
     width: 100%;
     height: fit-content;
+    margin-top: 30px;
   }
 
   &__time-scale {
     height: 100%;
     width: 48px;
+    margin-top: -10px;
   }
 
   &__week {
@@ -37,7 +39,7 @@
   }
 
   &__time-slot {
-    height: 59px;
+    height: 60px;
     position: relative;
     border-bottom: 1px solid #eee;
   }

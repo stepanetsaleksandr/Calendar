@@ -23,6 +23,7 @@ class Day extends Component {
               key={this.props.dataDay + hour}
               dataHour={hour}
               hourEvents={hourEvents}
+              events={this.props.events}
             />
           );
         })}
