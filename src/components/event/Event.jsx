@@ -1,6 +1,6 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
-
+import events from "../../gateway/events";
 import "./event.scss";
 
 class Event extends Component {
@@ -12,7 +12,7 @@ class Event extends Component {
 
     return (
       <div style={(this.props.height, this.props.marginTop)} className="event">
-        <div className="event__title">{title}</div>
+        <div className="event__title">{events.title}</div>
         <div className="event__time">{time}</div>
       </div>
     );
