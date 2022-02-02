@@ -7,7 +7,7 @@ import "./header.scss";
 
 class Header extends Component {
   state = {
-    isModalActive: true,
+    isModalActive: false,
   };
 
   closeModal() {
