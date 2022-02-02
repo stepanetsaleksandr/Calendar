@@ -4,11 +4,18 @@ import "./modal.scss";
 
 class Modal extends Component {
   render() {
+    console.log(this.props);
     return (
       <div className="modal overlay">
         <div className="modal__content">
           <div className="create-event">
-            <button className="create-event__close-btn">+</button>
+            <button
+              className="create-event__close-btn"
+              onClick={this.props.handleModalClose}
+            >
+              +
+            </button>
+
             <form className="event-form">
               <input
                 type="text"

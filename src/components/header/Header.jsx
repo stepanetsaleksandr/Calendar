@@ -1,11 +1,23 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
-
+import Modal from "../modal/Modal.jsx";
 import { months } from "../../utils/dateUtils.js";
 
 import "./header.scss";
 
 class Header extends Component {
+  state = {
+    isModalActive: true,
+  };
+
+  closeModal() {
+    this.setState({ isModalActive: false });
+  }
+
+  openModal() {
+    this.setState({ isModalActive: true });
+  }
+
   render() {
     ///// Рендерим 2 месяца, если попадают в одну неделю
     const month1 = months[this.props.weekDates[0].getMonth()];
@@ -15,9 +27,20 @@ class Header extends Component {
 
     return (
       <header className="header">
-        <button className="button create-event-btn">
+        {this.state.isModalActive && (
+          <Modal
+            closeModal={this.closeModal}
+            handleModalClose={() => this.closeModal()}
+          />
+        )}
+
+        <button
+          className="button create-event-btn"
+          onClick={() => this.openModal(true)}
+        >
           <i className="fas fa-plus create-event-btn__icon"></i>Create
         </button>
+
         <div className="navigation">
           <button // today button
             className="navigation__today-btn button"
