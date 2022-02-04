@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react/cjs/react.production.min";
 import Day from "../day/Day";
 
 import "./week.scss";

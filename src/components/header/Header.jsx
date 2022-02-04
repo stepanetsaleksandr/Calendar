@@ -2,7 +2,7 @@ import React from "react";
 import { Component } from "react/cjs/react.production.min";
 import Modal from "../modal/Modal.jsx";
 import { months } from "../../utils/dateUtils.js";
-
+import { fetchEvents } from "../../gateway/events.js";
 import "./header.scss";
 
 class Header extends Component {
@@ -18,6 +18,8 @@ class Header extends Component {
     this.setState({ isModalActive: true });
   }
 
+  getDefaultTime = (date, format) => moment(date).format(format);
+
   render() {
     ///// Рендерим 2 месяца, если попадают в одну неделю
     const month1 = months[this.props.weekDates[0].getMonth()];
@@ -31,6 +33,7 @@ class Header extends Component {
           <Modal
             closeModal={this.closeModal}
             handleModalClose={() => this.closeModal()}
+            addEvent={this.props.addEvent}
           />
         )}
 
@@ -73,6 +76,18 @@ class Header extends Component {
           </button>
 
           <span className="navigation__displayed-month">{month}</span>
+          <button // today button
+            className="navigation__list-btn button"
+            onClick={() => {
+              const resArr = async () => {
+                const arrayFromFetch = await fetchEvents();
+                console.log(arrayFromFetch);
+              };
+              resArr();
+            }}
+          >
+            TasksListToConsole
+          </button>
         </div>
       </header>
     );

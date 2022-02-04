@@ -1,8 +1,6 @@
 import React from "react";
-import events from "../../gateway/events";
 import Event from "../event/Event";
 import { formatMins } from "../../../src/utils/dateUtils.js";
-import { Component } from "react/cjs/react.production.min";
 
 const Hour = ({ dataHour, hourEvents }) => {
   return (

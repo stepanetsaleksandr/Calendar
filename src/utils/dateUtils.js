@@ -39,6 +39,17 @@ export const formatMins = (mins) => {
   return mins < 10 ? `0${mins}` : mins;
 };
 
+// Меняем формат даты в массиве из сервера
+export const formatDateInData = (arr) => {
+  arr.map((event) => {
+    const dateFrom = event.dateFrom;
+    const dateTo = event.dateTo;
+    event.dateFrom = moment(dateFrom).format("MMMM Do YYYY, h:mm:ss a");
+    event.dateTo = moment(dateTo).format("MMMM Do YYYY, h:mm:ss a");
+    return event;
+  });
+};
+
 export const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export const months = [
   "January",

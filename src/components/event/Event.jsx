@@ -1,6 +1,4 @@
 import React from "react";
-import { Component } from "react/cjs/react.production.min";
-import events from "../../gateway/events";
 import "./event.scss";
 
 const Event = ({ height, marginTop, title, time }) => {
