@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import './timeSlotModal.scss';
-import { timeFromFixed, getDefaultTime } from '../../../src/utils/dateUtils.js';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import "./timeSlotModal.scss";
+import { timeFromFixed, getDefaultTime } from "../../../src/utils/dateUtils.js";
 
 const TimeSlotModal = ({
   handleModalClose,
@@ -14,32 +14,35 @@ const TimeSlotModal = ({
   const dataTimeFixed = new Date(dataDayFixed.setHours(dataTime));
 
   const [date, setDate] = useState({
-    date: getDefaultTime(dataDayFixed, 'YYYY-MM-DD'),
+    date: getDefaultTime(dataDayFixed, "YYYY-MM-DD"),
   });
   const [timeFrom, setTimeFrom] = useState({
     timeFrom: getDefaultTime(
       new Date(new Date().setHours(dataTimeFixed.getHours(), 0, 0)),
-      'HH:mm',
+      "HH:mm"
     ),
   });
   const [timeTo, setTimeTo] = useState({
-    timeTo: getDefaultTime(new Date(new Date().setHours(dataTimeFixed.getHours(), 60, 0)), 'HH:mm'),
+    timeTo: getDefaultTime(
+      new Date(new Date().setHours(dataTimeFixed.getHours(), 60, 0)),
+      "HH:mm"
+    ),
   });
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
 
   const eventObj = Object.assign({}, date, timeFrom, timeTo, title);
 
-  const handleSubmitEvent = event => {
+  const handleSubmitEvent = (event) => {
     const { date, timeFrom, timeTo, title } = eventObj;
 
     const df = new Date(date);
     const dateFrom = new Date(
-      df.setHours(timeFrom.slice(0, 2), timeFromFixed(timeFrom.slice(3, 5)), 0),
+      df.setHours(timeFrom.slice(0, 2), timeFromFixed(timeFrom.slice(3, 5)), 0)
     ).getTime();
 
     const dt = new Date(date);
     const dateTo = new Date(
-      dt.setHours(timeTo.slice(0, 2), timeFromFixed(timeTo.slice(3, 5)), 0),
+      dt.setHours(timeTo.slice(0, 2), timeFromFixed(timeTo.slice(3, 5)), 0)
     ).getTime();
 
     event.preventDefault();
@@ -59,11 +62,11 @@ const TimeSlotModal = ({
             placeholder="Title"
             className="tsevent-form__field"
             value={Object.values(title)}
-            onChange={e => {
+            onChange={(e) => {
               const { name, value } = e.target;
               setTitle({ [name]: value });
             }}
-            placeholder={'Title...'}
+            placeholder={"Title..."}
           />
           <div className="tsevent-form__time">
             <input
@@ -71,7 +74,7 @@ const TimeSlotModal = ({
               name="date"
               className="tsevent-form__field"
               value={Object.values(date)}
-              onChange={e => {
+              onChange={(e) => {
                 const { name, value } = e.target;
                 setDate({ [name]: value });
               }}
@@ -81,7 +84,7 @@ const TimeSlotModal = ({
               name="timeFrom"
               className="tsevent-form__field"
               value={Object.values(timeFrom)}
-              onChange={e => {
+              onChange={(e) => {
                 const { name, value } = e.target;
                 setTimeFrom({ [name]: value });
               }}
@@ -92,7 +95,7 @@ const TimeSlotModal = ({
               name="timeTo"
               className="tsevent-form__field"
               value={Object.values(timeTo)}
-              onChange={e => {
+              onChange={(e) => {
                 const { name, value } = e.target;
                 setTimeTo({ [name]: value });
               }}
@@ -101,7 +104,7 @@ const TimeSlotModal = ({
           <button
             type="reset"
             className="tsevent-form__btn-cancel btn"
-            onClick={event => {
+            onClick={(event) => {
               event.stopPropagation();
               handleModalClose();
               setTimeSlotModalOpen();
