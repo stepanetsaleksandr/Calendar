@@ -41,14 +41,9 @@ const Calendar = ({
 };
 
 Calendar.propTypes = {
-  // events: PropTypes.object,
   events: PropTypes.array.isRequired,
   weekDates: PropTypes.array.isRequired,
   deleteEvent: PropTypes.func.isRequired,
 };
-
-// Calendar.defaultProps = {
-//   events: [],
-// };
 
 export default Calendar;

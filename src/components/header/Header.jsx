@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import Modal from '../modal/Modal.jsx';
-import PropTypes from 'prop-types';
-
-import { months, getCurrentMonth } from '../../utils/dateUtils.js';
-
-import './header.scss';
+import React, { useState } from "react";
+import Modal from "../modal/Modal.jsx";
+import PropTypes from "prop-types";
+import { months, getCurrentMonth } from "../../utils/dateUtils.js";
+import "./header.scss";
 
 const Header = ({
   postNewEvent,
@@ -14,12 +12,17 @@ const Header = ({
   weekStartDate,
   updateEventsApp,
 }) => {
-  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth(months, new Date()));
+  const [currentMonth, setCurrentMonth] = useState(
+    getCurrentMonth(months, new Date())
+  );
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
     <header className="header">
-      <button className="create-event-btn button" onClick={() => setModalOpen(true)}>
+      <button
+        className="create-event-btn button"
+        onClick={() => setModalOpen(true)}
+      >
         <i className="fas fa-plus create-event-btn__icon"></i>
         <span className="create-event-btn__text">Create</span>
       </button>

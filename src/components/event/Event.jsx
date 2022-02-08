@@ -56,7 +56,6 @@ Event.propTypes = {
   title: PropTypes.string,
   marginTop: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  // id: PropTypes.number.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   time: PropTypes.string,
 };

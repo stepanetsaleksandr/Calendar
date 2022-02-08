@@ -1,7 +1,6 @@
 import React from "react";
 import Hour from "../hour/Hour";
 import PropTypes from "prop-types";
-
 import "./day.scss";
 
 const Day = ({

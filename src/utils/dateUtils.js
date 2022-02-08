@@ -66,22 +66,6 @@ export const getHoursFunc = (date) =>
   new Date(new Date(date).toString()).getHours();
 export const getMinutesFunc = (date) =>
   new Date(new Date(date).toString()).getMinutes();
-// export const timeValidation = (events) => {
-//   const result = events.find(
-//     (event) =>
-//       getDateFunc(event.dateFrom) === getDateFunc(dateFrom) &&
-//       ((event.dateFrom < dateFrom && event.dateTo > dateFrom) ||
-//         (event.dateFrom < dateTo && event.dateTo > dateTo) ||
-//         (dateFrom < event.dateFrom &&
-//           dateTo > event.dateFrom &&
-//           dateTo > event.dateTo))
-//   );
-
-//   if (result) {
-//     return true;
-//   }
-//   return false;
-// };
 
 export const getDefaultTime = (date, format) => moment(date).format(format);
 export const currentDate = new Date();
