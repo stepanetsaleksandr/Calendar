@@ -1,93 +1,126 @@
-import React, { Component, useState, useEffect } from "react";
-import { postEventAtApi } from "../../gateway/events";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import "./modal.scss";
+import {
+  timeFromFixed,
+  getDefaultTime,
+  currentDate,
+} from "../../../src/utils/dateUtils.js";
 
-const Modal = ({ handleModalClose }) => {
-  // state = { title: "", date: "", dateFrom: "", dateTo: "", description: "" };
-  const [task, setTask] = useState({
-    title: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-    description: "",
+const Modal = ({ handleModalClose, postNewEvent }) => {
+  const [date, setDate] = useState({
+    date: getDefaultTime(currentDate, "YYYY-MM-DD"),
   });
+  const [timeFrom, setTimeFrom] = useState({
+    timeFrom: getDefaultTime(currentDate, "HH:mm"),
+  });
+  const [timeTo, setTimeTo] = useState({
+    timeTo: getDefaultTime(
+      currentDate.setMinutes(currentDate.getMinutes() + 15),
+      "HH:mm"
+    ),
+  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  // Запись в стейт при вводе в поля
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setTask({ [name]: value });
-  };
+  const eventDataObj = Object.assign(
+    {},
+    date,
+    timeFrom,
+    timeTo,
+    title,
+    description
+  );
 
-  // отправка формы
-  const handleSubmit = (event) => {
-    this.state.title;
+  const handleSubmitEvent = (event) => {
+    const { date, timeFrom, timeTo, title, description } = eventDataObj;
 
-    postEventAtApi(event);
+    const dateVal = new Date(date);
+    const dateFrom = new Date(
+      dateVal.setHours(
+        timeFrom.slice(0, 2),
+        timeFromFixed(timeFrom.slice(3, 5)),
+        0
+      )
+    ).getTime();
+
+    const dt = new Date(date);
+    const dateTo = new Date(
+      dateVal.setHours(timeTo.slice(0, 2), timeFromFixed(timeTo.slice(3, 5)), 0)
+    ).getTime();
+
     event.preventDefault();
+    postNewEvent({ dateFrom, dateTo, title, description });
+
+    handleModalClose();
   };
 
-  // handleSubmit = (event) => {
-  //   this.props.addEvent(this.state);
-  //   postEventAtApi(this.state).then(this.props.handleModalClose);
-  //   console.log(this.state);
-  //   event.preventDefault();
-  // };
-
-  console.log(task);
   return (
     <div className="modal overlay">
       <div className="modal__content">
         <div className="create-event">
           <button
             className="create-event__close-btn"
-            onClick={handleModalClose}
+            onClick={() => handleModalClose()}
           >
             +
           </button>
-
-          <form className="event-form" onSubmit={handleSubmit}>
+          <form className="event-form" onSubmit={handleSubmitEvent}>
             <input
               type="text"
               name="title"
               placeholder="Title"
               className="event-form__field"
-              value={task.title}
-              onChange={handleChange}
+              value={Object.values(title)}
+              onChange={(e) => {
+                const { name, value } = e.target;
+                setTitle({ [name]: value });
+              }}
+              placeholder={"Print your title, please..."}
             />
-
             <div className="event-form__time">
               <input
                 type="date"
                 name="date"
                 className="event-form__field"
-                value={task.date}
-                onChange={handleChange}
+                value={Object.values(date)}
+                onChange={(e) => {
+                  const { name, value } = e.target;
+                  setDate({ [name]: value });
+                }}
               />
               <input
                 type="time"
-                name="dateFrom"
+                name="timeFrom"
                 className="event-form__field"
-                value={task.dateFrom}
-                onChange={handleChange}
+                value={Object.values(timeFrom)}
+                onChange={(e) => {
+                  const { name, value } = e.target;
+                  setTimeFrom({ [name]: value });
+                }}
               />
               <span>-</span>
               <input
                 type="time"
-                name="dateTo"
+                name="timeTo"
                 className="event-form__field"
-                value={task.dateTo}
-                onChange={handleChange}
+                value={Object.values(timeTo)}
+                onChange={(e) => {
+                  const { name, value } = e.target;
+                  setTimeTo({ [name]: value });
+                }}
               />
             </div>
-
             <textarea
               name="description"
-              placeholder="Description"
+              placeholder={"Print your description, please..."}
               className="event-form__field"
-              value={task.description}
-              onChange={handleChange}
+              value={Object.values(description)}
+              onChange={(e) => {
+                const { name, value } = e.target;
+                setDescription({ [name]: value });
+              }}
             ></textarea>
-
             <button type="submit" className="event-form__submit-btn">
               Create
             </button>
@@ -96,6 +129,11 @@ const Modal = ({ handleModalClose }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  handleModalClose: PropTypes.func.isRequired,
+  postNewEvent: PropTypes.func.isRequired,
 };
 
 export default Modal;

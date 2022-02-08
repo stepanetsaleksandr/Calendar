@@ -1,21 +1,22 @@
-export const getWeekStartDate = (date) => {
-  //  принимаем текущую дату, возвращаем значения понедельника этой недели
-  const dateCopy = new Date(date);
-  const dayOfWeek = dateCopy.getDay(); // Узнаем каакой сегодня день недели
-  const difference = // разница до понедельника
-    dayOfWeek === 0 // если сегодня воскресенье разница будет -6
-      ? -6 // for Sunday
-      : 1 - dayOfWeek; // если другой день, например пятница разница 4 дня (-4)
-  const monday = new Date(dateCopy.setDate(date.getDate() + difference)); // понедельник этой недели будет= текущая дата + разница дней (если пятница 5-4)
-  const startDate = new Date(
-    monday.getFullYear(),
-    monday.getMonth(),
-    monday.getDate()
-  );
-  return startDate; // результат возврата = прошлый понедельник, или текущий если сегодня понедельник
+import moment from "moment";
+
+export const getTimezone = () => {
+  const offset = new Date().getTimezoneOffset();
+  if (offset < 0) {
+    if (-offset % 60 < 10) return `GMT+0${Math.ceil(offset / -60)}`;
+  } else {
+    if (offset % 60 < 10) return `GMT-0${Math.ceil(offset / 60)}`;
+  }
 };
 
-// создаем масив дат начиная с укзаного стартового дня
+export const getWeekStartDate = (date) => {
+  const dateCopy = new Date(date);
+  const dayOfWeek = dateCopy.getDay();
+  const difference = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  const monday = new Date(dateCopy.setDate(date.getDate() + difference));
+  return new Date(monday.getFullYear(), monday.getMonth(), monday.getDate());
+};
+
 export const generateWeekRange = (startDate) => {
   const result = [];
   for (let i = 0; i < 7; i += 1) {
@@ -28,29 +29,69 @@ export const generateWeekRange = (startDate) => {
 export const getDateTime = (date, time) => {
   const [hours, minutes] = time.split(":");
   const withHours = new Date(new Date(date).setHours(Number(hours)));
-  console.log("get Date time" + withHours);
   const withMinutes = new Date(new Date(withHours).setMinutes(Number(minutes)));
-  console.log("get Date time" + withMinutes);
   return withMinutes;
 };
 
-// формат минут в 2 знака
-export const formatMins = (mins) => {
-  return mins < 10 ? `0${mins}` : mins;
+export const getNextWeek = (weekStartDate) =>
+  new Date(
+    weekStartDate.getFullYear(),
+    weekStartDate.getMonth(),
+    weekStartDate.getDate() + 7
+  );
+
+export const getPreviousWeek = (weekStartDate) =>
+  new Date(
+    weekStartDate.getFullYear(),
+    weekStartDate.getMonth(),
+    weekStartDate.getDate() - 7
+  );
+
+export const timeFromFixed = (time) => {
+  const timing = parseInt(time);
+  if (timing >= 0 && timing <= 14) {
+    return "00";
+  } else if (timing >= 15 && timing <= 29) {
+    return "15";
+  } else if (timing >= 30 && timing <= 44) {
+    return "30";
+  } else if (timing >= 45 && timing <= 60) {
+    return "45";
+  }
 };
 
-// Меняем формат даты в массиве из сервера
-export const formatDateInData = (arr) => {
-  arr.map((event) => {
-    const dateFrom = event.dateFrom;
-    const dateTo = event.dateTo;
-    event.dateFrom = moment(dateFrom).format("MMMM Do YYYY, h:mm:ss a");
-    event.dateTo = moment(dateTo).format("MMMM Do YYYY, h:mm:ss a");
-    return event;
-  });
-};
+export const getDateFunc = (date) =>
+  new Date(new Date(date).toString()).getDay();
+export const getHoursFunc = (date) =>
+  new Date(new Date(date).toString()).getHours();
+export const getMinutesFunc = (date) =>
+  new Date(new Date(date).toString()).getMinutes();
+// export const timeValidation = (events) => {
+//   const result = events.find(
+//     (event) =>
+//       getDateFunc(event.dateFrom) === getDateFunc(dateFrom) &&
+//       ((event.dateFrom < dateFrom && event.dateTo > dateFrom) ||
+//         (event.dateFrom < dateTo && event.dateTo > dateTo) ||
+//         (dateFrom < event.dateFrom &&
+//           dateTo > event.dateFrom &&
+//           dateTo > event.dateTo))
+//   );
 
+//   if (result) {
+//     return true;
+//   }
+//   return false;
+// };
+
+export const getDefaultTime = (date, format) => moment(date).format(format);
+export const currentDate = new Date();
+export const formatMins = (mins) => (mins < 10 ? `0${mins}` : mins);
 export const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export const getCurrentMonth = (monthNames, dateCopy) => {
+  const dayOfWeek = dateCopy.getMonth();
+  return `${monthNames[dayOfWeek]} — ${monthNames[dayOfWeek + 1]}`;
+};
+
 export const months = [
   "January",
   "February",

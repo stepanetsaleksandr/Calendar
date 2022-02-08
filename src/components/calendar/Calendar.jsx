@@ -1,26 +1,54 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { getTimezone } from "../../utils/dateUtils";
 import Navigation from "./../navigation/Navigation";
 import Week from "../week/Week";
 import Sidebar from "../sidebar/Sidebar";
 
 import "./calendar.scss";
 
-class Calendar extends Component {
-  render() {
-    const { weekDates } = this.props;
+const Calendar = ({
+  events,
+  weekDates,
+  deleteEvent,
+  postNewEvent,
+  updateEventsApp,
+}) => {
+  const [calendarRender, setRender] = useState(false);
 
-    return (
-      <section className="calendar">
-        <Navigation weekDates={weekDates} />
-        <div className="calendar__body">
-          <div className="calendar__week-container">
-            <Sidebar />
-            <Week weekDates={weekDates} events={this.props.events} />
-          </div>
+  return calendarRender || !calendarRender ? (
+    <section className="calendar">
+      <Navigation weekDates={weekDates} />
+      <div className="calendar__offset">
+        <span className="calendar__offset-text">{getTimezone()}</span>
+        <div className="calendar__offset-line"></div>
+      </div>
+      <div className="calendar__body">
+        <div className="calendar__week-container">
+          <Sidebar />
+          <Week
+            weekDates={weekDates}
+            events={events}
+            deleteEvent={deleteEvent}
+            postNewEvent={postNewEvent}
+            calendarRender={setRender}
+            updateEventsApp={updateEventsApp}
+          />
         </div>
-      </section>
-    );
-  }
-}
+      </div>
+    </section>
+  ) : null;
+};
+
+Calendar.propTypes = {
+  // events: PropTypes.object,
+  events: PropTypes.array.isRequired,
+  weekDates: PropTypes.array.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+};
+
+// Calendar.defaultProps = {
+//   events: [],
+// };
 
 export default Calendar;

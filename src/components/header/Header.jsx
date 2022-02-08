@@ -1,117 +1,77 @@
-import React from "react";
-import { Component } from "react/cjs/react.production.min";
-import Modal from "../modal/Modal.jsx";
-import { months } from "../../utils/dateUtils.js";
-import { fetchEvents } from "../../gateway/events.js";
-import "./header.scss";
+import React, { useState } from 'react';
+import Modal from '../modal/Modal.jsx';
+import PropTypes from 'prop-types';
 
-class Header extends Component {
-  state = {
-    isModalActive: false,
-  };
+import { months, getCurrentMonth } from '../../utils/dateUtils.js';
 
-  closeModal() {
-    this.setState({ isModalActive: false });
-  }
+import './header.scss';
 
-  openModal() {
-    this.setState({ isModalActive: true });
-  }
+const Header = ({
+  postNewEvent,
+  getCurrentWeek,
+  getPreviousWeek,
+  getNextWeek,
+  weekStartDate,
+  updateEventsApp,
+}) => {
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth(months, new Date()));
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  getDefaultTime = (date, format) => moment(date).format(format);
+  return (
+    <header className="header">
+      <button className="create-event-btn button" onClick={() => setModalOpen(true)}>
+        <i className="fas fa-plus create-event-btn__icon"></i>
+        <span className="create-event-btn__text">Create</span>
+      </button>
 
-  render() {
-    ///// Рендерим 2 месяца, если попадают в одну неделю
-    const month1 = months[this.props.weekDates[0].getMonth()];
-    const month2 = months[this.props.weekDates[6].getMonth()];
-    const month =
-      `${month1}` === `${month2}` ? `${month1}` : `${month1} - ${month2}`;
+      {isModalOpen && (
+        <Modal
+          handleModalClose={() => setModalOpen(false)}
+          postNewEvent={postNewEvent}
+          updateEventsApp={updateEventsApp}
+        />
+      )}
 
-    return (
-      <header className="header">
-        {this.state.isModalActive && (
-          <Modal
-            closeModal={this.closeModal}
-            handleModalClose={() => this.closeModal()}
-            addEvent={this.props.addEvent}
-          />
-        )}
-
+      <div className="navigation">
         <button
-          className="button create-event-btn"
-          onClick={() => this.openModal(true)}
+          className="navigation__today-btn button"
+          onClick={() => {
+            getCurrentWeek();
+            setCurrentMonth(getCurrentMonth(months, new Date()));
+          }}
         >
-          <i className="fas fa-plus create-event-btn__icon"></i>Create
+          Today
         </button>
+        <button
+          className="icon-button navigation__nav-icon"
+          onClick={() => {
+            getPreviousWeek();
+            setCurrentMonth(getCurrentMonth(months, new Date(weekStartDate)));
+          }}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+        <button
+          className="icon-button navigation__nav-icon"
+          onClick={() => {
+            getNextWeek();
+            setCurrentMonth(getCurrentMonth(months, new Date(weekStartDate)));
+          }}
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+        <span className="navigation__displayed-month">{currentMonth}</span>
+      </div>
+    </header>
+  );
+};
 
-        <div className="navigation">
-          <button // today button
-            className="navigation__today-btn button"
-            onClick={() => {
-              this.props.setWeekStartDate(new Date());
-            }}
-          >
-            Today
-          </button>
-          <button
-            className="icon-button navigation__nav-icon"
-            onClick={() => {
-              this.props.setWeekStartDate(
-                this.props.getPreviousWeek(this.props.weekStartDate)
-              );
-            }}
-          >
-            <i className="fas fa-chevron-left"></i>
-          </button>
-
-          <button
-            className="icon-button navigation__nav-icon"
-            onClick={() => {
-              this.props.setWeekStartDate(
-                this.props.getNextWeek(this.props.weekStartDate)
-              );
-            }}
-          >
-            <i className="fas fa-chevron-right"></i>
-          </button>
-
-          <span className="navigation__displayed-month">{month}</span>
-          <button // today button
-            className="navigation__list-btn button"
-            onClick={() => {
-              const resArr = async () => {
-                const arrayFromFetch = await fetchEvents();
-                console.log(arrayFromFetch);
-              };
-              resArr();
-            }}
-          >
-            TasksListToConsole
-          </button>
-        </div>
-      </header>
-    );
-  }
-}
-
-// const Header = () => {
-//   return (
-//     <header className="header">
-//       <button className="button create-event-btn">
-//         <i className="fas fa-plus create-event-btn__icon"></i>Create
-//       </button>
-//       <div className="navigation">
-//         <button className="navigation__today-btn button">Today</button>
-//         <button className="icon-button navigation__nav-icon">
-//           <i className="fas fa-chevron-left"></i>
-//         </button>
-//         <button className="icon-button navigation__nav-icon">
-//           <i className="fas fa-chevron-right"></i>
-//         </button>
-//         <span className="navigation__displayed-month"></span>
-//       </div>
-//     </header>
-//   );
-// };
+Header.propTypes = {
+  postNewEvent: PropTypes.func.isRequired,
+  getCurrentWeek: PropTypes.func.isRequired,
+  getPreviousWeek: PropTypes.func.isRequired,
+  getNextWeek: PropTypes.func.isRequired,
+  weekStartDate: PropTypes.object.isRequired,
+};
 
 export default Header;

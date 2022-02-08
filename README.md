@@ -1,11 +1,9 @@
-# :gem:[Calendar-React](https://gromcalendar.netlify.app/):gem:
 
-### [Github](https://github.com/stepanetsaleksandr/Calendar)
+# Calendar-React
 
-Layout supports desktop (starting with-1400) versions
+### [Github](https://github.com/mariia-roskladka/Calendar_grom)
 
 ### The tech stack is:
-
 - [JavaScript](https://ru.wikipedia.org/wiki/JavaScript)
 - [React](https://ru.reactjs.org/)
 - [HTML5](https://en.wikipedia.org/wiki/HTML5)

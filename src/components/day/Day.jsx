@@ -1,56 +1,52 @@
 import React from "react";
-import { Component } from "react/cjs/react.production.min";
 import Hour from "../hour/Hour";
+import PropTypes from "prop-types";
 
 import "./day.scss";
 
-class Day extends Component {
-  render() {
-    const hours = Array(24)
-      .fill()
-      .map((val, index) => index);
+const Day = ({
+  dataDay,
+  dayEvents,
+  deleteEvent,
+  postNewEvent,
+  calendarRender,
+  updateEventsApp,
+}) => {
+  const hours = Array(24)
+    .fill()
+    .map((val, index) => index);
 
-    return (
-      <div className="calendar__day" data-day={this.props.dataDay}>
-        {hours.map((hour) => {
-          //getting all events from the day we will render
-          const hourEvents = this.props.dayEvents.filter(
-            (event) => event.dateFrom.getHours() === hour
-          );
+  return (
+    <div className="calendar__day" data-day={dataDay}>
+      {hours.map((hour) => {
+        const hourEvents = dayEvents.filter(
+          (event) => new Date(event.dateFrom).getHours() === hour
+        );
+        return (
+          <Hour
+            key={dataDay + hour}
+            dataHour={hour}
+            dataDay={dataDay}
+            hourEvents={hourEvents}
+            deleteEvent={deleteEvent}
+            postNewEvent={postNewEvent}
+            calendarRender={calendarRender}
+            updateEventsApp={updateEventsApp}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
-          return (
-            <Hour
-              key={this.props.dataDay + hour}
-              dataHour={hour}
-              hourEvents={hourEvents}
-              events={this.props.events}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-}
+Day.propTypes = {
+  dayEvents: PropTypes.array.isRequired,
+  dataDay: PropTypes.number.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+};
 
-// const Day = ({ dataDay, dayEvents }) => {
-//   const hours = Array(24)
-//     .fill()
-//     .map((val, index) => index);
-
-//   return (
-//     <div className="calendar__day" data-day={dataDay}>
-//       {hours.map((hour) => {
-//         //getting all events from the day we will render
-//         const hourEvents = dayEvents.filter(
-//           (event) => event.dateFrom.getHours() === hour
-//         );
-
-//         return (
-//           <Hour key={dataDay + hour} dataHour={hour} hourEvents={hourEvents} />
-//         );
-//       })}
-//     </div>
-//   );
-// };
+Day.defaultProps = {
+  dayEvents: [],
+};
 
 export default Day;

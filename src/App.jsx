@@ -1,62 +1,139 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/header/Header.jsx";
 import Calendar from "./components/calendar/Calendar.jsx";
-import { getWeekStartDate, generateWeekRange } from "../src/utils/dateUtils.js";
+import {
+  getWeekStartDate,
+  generateWeekRange,
+  getNextWeek,
+  getPreviousWeek,
+  getDateFunc,
+  getHoursFunc,
+  getMinutesFunc,
+} from "../src/utils/dateUtils.js";
+import {
+  updateEvents,
+  deleteEvent,
+  postNewEvent,
+} from "../src/gateway/gateways.js";
+
 import "./common.scss";
-import { fetchEvents } from "./gateway/events.js";
 
 const App = () => {
   const [weekStartDate, setWeekStartDate] = useState(new Date());
-  const weekDates = generateWeekRange(getWeekStartDate(weekStartDate)); // дни недели, на входе текущая дата
+  const weekDates = generateWeekRange(getWeekStartDate(weekStartDate));
   const [events, setEvents] = useState([]);
 
-  // Текущая неделя
-  const getCurrWeek = () => {
+  const updateEventsApp = () =>
+    updateEvents().then((json) =>
+      json.map((event) => {
+        setEvents((result) => [...result, event]);
+      })
+    );
+
+  const pageUpdater = () => {
+    setEvents([]);
+    updateEventsApp();
+  };
+
+  const deleteEventFromApp = (id) => {
+    const eventToDelete = events.find((event) => event.id === id);
+    if (
+      eventToDelete.dateFrom >= new Date().getTime() &&
+      eventToDelete.dateFrom - 15 * 60 * 1000 <= new Date().getTime()
+    ) {
+      alert(`Sorry, we can't cancel event in 15 minutes to start!`);
+    } else {
+      setEvents(events.filter((event) => event.id !== id));
+      deleteEvent(id).then(() => pageUpdater());
+    }
+  };
+
+  const postNewEventInApp = ({ dateFrom, dateTo, title, description }) => {
+    const eventToPost = {
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+      title: title,
+      description: description,
+    };
+
+    const timeValidation = () => {
+      const result = events.find(
+        (event) =>
+          getDateFunc(event.dateFrom) === getDateFunc(dateFrom) &&
+          ((event.dateFrom < dateFrom && event.dateTo > dateFrom) ||
+            (event.dateFrom < dateTo && event.dateTo > dateTo) ||
+            (dateFrom < event.dateFrom &&
+              dateTo > event.dateFrom &&
+              dateTo > event.dateTo))
+      );
+
+      if (result) {
+        return true;
+      }
+      return false;
+    };
+
+    const hoursValidation = (dateTo - dateFrom) / 1000 / 60 / 60;
+
+    const dayValidation = () => {
+      const dateToDay = dateTo / 1000 / 60 / 60;
+      const dateFromDay = dateFrom / 1000 / 60 / 60;
+
+      if (dateToDay < dateFromDay) {
+        return true;
+      }
+      return false;
+    };
+
+    const midnightValidation =
+      getHoursFunc(dateFrom) === 0 && getMinutesFunc(dateFrom) === 0;
+
+    if (timeValidation()) {
+      alert(`Sorry, we can't shedule two events in one time!`);
+    } else if (hoursValidation > 6) {
+      alert(`Sorry, event's longer than 6 hours are not allowed!`);
+    } else if (dayValidation()) {
+      alert(`Sorry, each event should starts and ends in one day!`);
+    } else if (midnightValidation) {
+      alert(`Let's start at 00:15!`);
+    } else {
+      setEvents([...events, eventToPost]);
+      postNewEvent(eventToPost).then(() => pageUpdater());
+    }
+  };
+
+  useEffect(() => pageUpdater(), []);
+
+  const getNextWeekInApp = () => {
+    setWeekStartDate(getNextWeek(weekStartDate));
+  };
+
+  const getPreviousWeekInApp = () => {
+    setWeekStartDate(getPreviousWeek(weekStartDate));
+  };
+
+  const getCurrentWeekInApp = () => {
     setWeekStartDate(new Date());
+    updateEventsApp();
   };
-
-  //След неделя
-  const getNextWeek = (weekStartDate) =>
-    new Date(
-      weekStartDate.getFullYear(),
-      weekStartDate.getMonth(),
-      weekStartDate.getDate() + 7
-    );
-
-  // Предыдущая неделя
-  const getPreviousWeek = (weekStartDate) =>
-    new Date(
-      weekStartDate.getFullYear(),
-      weekStartDate.getMonth(),
-      weekStartDate.getDate() - 7
-    );
-
-  //загрузка событий из сервера
-  const loadDataFromServer = () => {
-    fetchEvents().then((data) => {
-      setEvents(data);
-    });
-  };
-
-  // обновление стейта даными из сервера
-  useEffect(() => {
-    loadDataFromServer();
-  }, []);
-
-  console.log(events);
 
   return (
     <>
       <Header
-        weekDates={weekDates}
+        getNextWeek={getNextWeekInApp}
+        getPreviousWeek={getPreviousWeekInApp}
+        getCurrentWeek={getCurrentWeekInApp}
+        postNewEvent={postNewEventInApp}
         weekStartDate={weekStartDate}
-        setWeekStartDate={setWeekStartDate}
-        getCurrWeek={getCurrWeek}
-        getNextWeek={getNextWeek}
-        getPreviousWeek={getPreviousWeek}
-        events={events}
+        updateEventsApp={updateEventsApp}
       />
-      <Calendar weekDates={weekDates} events={events} />
+      <Calendar
+        weekDates={weekDates}
+        events={events}
+        deleteEvent={deleteEventFromApp}
+        postNewEvent={postNewEventInApp}
+        updateEventsApp={updateEventsApp}
+      />
     </>
   );
 };

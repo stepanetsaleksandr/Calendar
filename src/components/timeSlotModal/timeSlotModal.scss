@@ -1,0 +1,89 @@
+.tsmodal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__content {
+    background: #599bb3;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: #fff;
+    text-shadow: 0px 2px 2px #0b1316;
+    box-shadow: 0px 10px 14px -7px #276873;
+    background: linear-gradient(to bottom, #80b1c4 15%, #4b8a96 100%);
+    border-radius: 10px;
+    border: 1px solid #29668f;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+  }
+}
+
+.tsoverlay {
+  position: absolute;
+  z-index: 10;
+}
+
+.btn {
+  opacity: 0.6;
+  width: 100%;
+  color: #fff;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.tsevent-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__field {
+    font-size: 1em;
+    margin: 8px;
+    padding: 5px;
+    border: 1px solid #29668f;
+    border-radius: 8px;
+  }
+
+  &__btn-submit {
+    margin: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: auto;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-shadow: 0px 2px 2px #0b1316;
+    box-shadow: 0px 10px 14px -7px #276873;
+    background: linear-gradient(to bottom, #73a3b4 5%, #4b8a96 100%);
+    border-radius: 10px;
+    border: 1px solid #29668f;
+
+    cursor: pointer;
+  }
+
+  &__btn-cancel {
+    margin: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: auto;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-shadow: 0px 2px 2px #0b1316;
+    box-shadow: 0px 10px 14px -7px #276873;
+    background: linear-gradient(to bottom, #73a3b4 5%, #4b8a96 100%);
+    border-radius: 10px;
+    border: 1px solid #29668f;
+
+    cursor: pointer;
+  }
+}
