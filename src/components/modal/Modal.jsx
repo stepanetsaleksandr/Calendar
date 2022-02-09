@@ -23,6 +23,7 @@ const Modal = ({ handleModalClose, postNewEvent }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  // Обьект данных события
   const eventDataObj = Object.assign(
     {},
     date,
@@ -34,24 +35,26 @@ const Modal = ({ handleModalClose, postNewEvent }) => {
 
   const handleSubmitEvent = (event) => {
     const { date, timeFrom, timeTo, title, description } = eventDataObj;
-
-    const dateVal = new Date(date);
+    const dateFromVal = new Date(date);
     const dateFrom = new Date(
-      dateVal.setHours(
+      dateFromVal.setHours(
         timeFrom.slice(0, 2),
         timeFromFixed(timeFrom.slice(3, 5)),
         0
       )
     ).getTime();
 
-    const dt = new Date(date);
+    const dateToVal = new Date(date);
     const dateTo = new Date(
-      dateVal.setHours(timeTo.slice(0, 2), timeFromFixed(timeTo.slice(3, 5)), 0)
+      dateToVal.setHours(
+        timeTo.slice(0, 2),
+        timeFromFixed(timeTo.slice(3, 5)),
+        0
+      )
     ).getTime();
 
     event.preventDefault();
     postNewEvent({ dateFrom, dateTo, title, description });
-
     handleModalClose();
   };
 
@@ -91,9 +94,11 @@ const Modal = ({ handleModalClose, postNewEvent }) => {
               />
               <input
                 type="time"
+                list="times"
                 name="timeFrom"
                 className="event-form__field"
                 value={Object.values(timeFrom)}
+                step="900"
                 onChange={(e) => {
                   const { name, value } = e.target;
                   setTimeFrom({ [name]: value });
@@ -102,14 +107,24 @@ const Modal = ({ handleModalClose, postNewEvent }) => {
               <span>-</span>
               <input
                 type="time"
+                list="times"
                 name="timeTo"
                 className="event-form__field"
                 value={Object.values(timeTo)}
+                step="900"
                 onChange={(e) => {
                   const { name, value } = e.target;
                   setTimeTo({ [name]: value });
                 }}
               />
+              <datalist id="times">
+                <option value="00:15">00:15</option>
+                <option>04:00</option>
+                <option>06:00</option>
+                <option>08:00</option>
+                <option>12:00</option>
+                <option>18:00</option>
+              </datalist>
             </div>
             <textarea
               name="description"

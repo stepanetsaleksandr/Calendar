@@ -62,6 +62,7 @@ export const timeFromFixed = (time) => {
 
 export const getDateFunc = (date) =>
   new Date(new Date(date).toString()).getDay();
+
 export const getHoursFunc = (date) =>
   new Date(new Date(date).toString()).getHours();
 export const getMinutesFunc = (date) =>

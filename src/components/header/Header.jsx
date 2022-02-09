@@ -31,7 +31,7 @@ const Header = ({
         <Modal
           handleModalClose={() => setModalOpen(false)}
           postNewEvent={postNewEvent}
-          updateEventsApp={updateEventsApp}
+          // updateEventsApp={updateEventsApp}
         />
       )}
 

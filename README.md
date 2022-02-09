@@ -1,9 +1,9 @@
-
 # Calendar-React
 
-### [Github](https://github.com/mariia-roskladka/Calendar_grom)
+### [Github]()
 
 ### The tech stack is:
+
 - [JavaScript](https://ru.wikipedia.org/wiki/JavaScript)
 - [React](https://ru.reactjs.org/)
 - [HTML5](https://en.wikipedia.org/wiki/HTML5)

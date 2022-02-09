@@ -35,14 +35,22 @@ const TimeSlotModal = ({
   const handleSubmitEvent = (event) => {
     const { date, timeFrom, timeTo, title } = eventObj;
 
-    const df = new Date(date);
+    const dateFromVal = new Date(date);
     const dateFrom = new Date(
-      df.setHours(timeFrom.slice(0, 2), timeFromFixed(timeFrom.slice(3, 5)), 0)
+      dateFromVal.setHours(
+        timeFrom.slice(0, 2),
+        timeFromFixed(timeFrom.slice(3, 5)),
+        0
+      )
     ).getTime();
 
-    const dt = new Date(date);
+    const dateToVal = new Date(date);
     const dateTo = new Date(
-      dt.setHours(timeTo.slice(0, 2), timeFromFixed(timeTo.slice(3, 5)), 0)
+      dateToVal.setHours(
+        timeTo.slice(0, 2),
+        timeFromFixed(timeTo.slice(3, 5)),
+        0
+      )
     ).getTime();
 
     event.preventDefault();

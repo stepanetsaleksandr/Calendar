@@ -13,7 +13,6 @@ const Hour = ({
   calendarRender,
   updateEventsApp,
 }) => {
-  const [currentTimeLine, setCurrentTimeLine] = useState(null);
   const [isTimeSlotModalOpen, setTimeSlotModalOpen] = useState(false);
 
   const nowDay = new Date();
@@ -22,16 +21,6 @@ const Hour = ({
   const styles = {
     marginTop: currentMin,
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTimeLine(new Date());
-    }, 60000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   return (
     <div
@@ -58,10 +47,12 @@ const Hour = ({
         />
       ) : null}
 
+      {/* Отрисовка события при клике на ячейку*/}
       {hourEvents.map(({ id, dateFrom, dateTo, title, description }) => {
         const eventStart = `${new Date(dateFrom).getHours()}:${formatMins(
           new Date(dateFrom).getMinutes()
         )}`;
+
         const eventEnd = `${new Date(dateTo).getHours()}:${formatMins(
           new Date(dateTo).getMinutes()
         )}`;

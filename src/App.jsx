@@ -95,7 +95,7 @@ const App = () => {
     } else if (dayValidation()) {
       alert(`Sorry, each event should starts and ends in one day!`);
     } else if (midnightValidation) {
-      alert(`Let's start at 00:15!`);
+      alert(`You can't start at 00:00! Try 00:15`);
     } else {
       setEvents([...events, eventToPost]);
       postNewEvent(eventToPost).then(() => pageUpdater());

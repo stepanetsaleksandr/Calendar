@@ -19,10 +19,12 @@ const Calendar = ({
   return calendarRender || !calendarRender ? (
     <section className="calendar">
       <Navigation weekDates={weekDates} />
+
       <div className="calendar__offset">
         <span className="calendar__offset-text">{getTimezone()}</span>
         <div className="calendar__offset-line"></div>
       </div>
+
       <div className="calendar__body">
         <div className="calendar__week-container">
           <Sidebar />
