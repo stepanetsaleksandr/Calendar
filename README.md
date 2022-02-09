@@ -1,6 +1,6 @@
-# Calendar-React
+# :gem:[Calendar-React](https://gromcalendar.netlify.app/):gem:
 
-### [Github]()
+### [Github](https://github.com/stepanetsaleksandr/Calendar)
 
 ### The tech stack is:
 
