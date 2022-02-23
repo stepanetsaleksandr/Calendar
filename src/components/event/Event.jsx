@@ -8,9 +8,9 @@ const Event = ({
   marginTop,
   title,
   time,
-  description,
   deleteEvent,
   id,
+  pageUpdater,
   updateEventsApp,
 }) => {
   const [isDeleteWindow, setDeleteWindow] = useState(false);
@@ -38,14 +38,15 @@ const Event = ({
         <div
           className="delete-event-btn"
           onClick={(event) => {
-            event.stopPropagation();
             deleteEvent(id);
             handleDelete();
-            updateEventsApp();
+            // pageUpdater();
+            // updateEventsApp();
+            event.stopPropagation();
           }}
         >
           <span className="delete-event-btn__text">X</span>
-          <div className="event__description">{description}</div>
+          <div className="event__description"></div>
         </div>
       )}
     </div>

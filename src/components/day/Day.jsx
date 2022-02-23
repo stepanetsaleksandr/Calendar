@@ -9,6 +9,7 @@ const Day = ({
   postNewEvent,
   calendarRender,
   updateEventsApp,
+  pageUpdater,
 }) => {
   const hours = Array(24)
     .fill()
@@ -22,7 +23,7 @@ const Day = ({
         );
         return (
           <Hour
-            key={dataDay + hour}
+            key={hour}
             dataHour={hour}
             dataDay={dataDay}
             hourEvents={hourEvents}
@@ -30,6 +31,7 @@ const Day = ({
             postNewEvent={postNewEvent}
             calendarRender={calendarRender}
             updateEventsApp={updateEventsApp}
+            pageUpdater={pageUpdater}
           />
         );
       })}

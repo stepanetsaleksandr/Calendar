@@ -60,6 +60,39 @@ export const timeFromFixed = (time) => {
   }
 };
 
+export const hoursValidation = (dateTo, dateFrom) =>
+  (dateTo - dateFrom) / 1000 / 60 / 60;
+
+export const midnightValidation = (dateFrom) =>
+  getHoursFunc(dateFrom) === 0 && getMinutesFunc(dateFrom) === 0;
+
+export const dayValidation = (dateTo, dateFrom) => {
+  const dateToDay = dateTo / 1000 / 60 / 60;
+  const dateFromDay = dateFrom / 1000 / 60 / 60;
+
+  if (dateToDay < dateFromDay) {
+    return true;
+  }
+  return false;
+};
+
+export const timeValidation = (events, dateTo, dateFrom) => {
+  const result = events.find(
+    (event) =>
+      getDateFunc(event.dateFrom) === getDateFunc(dateFrom) &&
+      ((event.dateFrom < dateFrom && event.dateTo > dateFrom) ||
+        (event.dateFrom < dateTo && event.dateTo > dateTo) ||
+        (dateFrom < event.dateFrom &&
+          dateTo > event.dateFrom &&
+          dateTo > event.dateTo))
+  );
+
+  if (result) {
+    return true;
+  }
+  return false;
+};
+
 export const getDateFunc = (date) =>
   new Date(new Date(date).toString()).getDay();
 

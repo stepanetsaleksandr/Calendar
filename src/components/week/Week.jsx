@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Day from "../day/Day";
 import PropTypes from "prop-types";
 
@@ -11,6 +11,7 @@ const Week = ({
   postNewEvent,
   calendarRender,
   updateEventsApp,
+  pageUpdater,
 }) => {
   return (
     <div className="calendar__week">
@@ -33,6 +34,7 @@ const Week = ({
             postNewEvent={postNewEvent}
             calendarRender={calendarRender}
             updateEventsApp={updateEventsApp}
+            pageUpdater={pageUpdater}
           />
         );
       })}

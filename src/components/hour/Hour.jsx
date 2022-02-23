@@ -12,6 +12,7 @@ const Hour = ({
   postNewEvent,
   calendarRender,
   updateEventsApp,
+  pageUpdater,
 }) => {
   const [isTimeSlotModalOpen, setTimeSlotModalOpen] = useState(false);
 
@@ -21,12 +22,15 @@ const Hour = ({
   const styles = {
     marginTop: currentMin,
   };
-
+  const handleClick = () => {
+    setTimeSlotModalOpen(true);
+    calendarRender(true);
+  };
   return (
     <div
       className="calendar__time-slot"
       data-time={dataHour + 1}
-      onClick={() => setTimeSlotModalOpen(true)}
+      onClick={() => handleClick()}
     >
       {dataDay === nowDay.getDate() &&
       dataHour === currentHour &&
@@ -44,10 +48,10 @@ const Hour = ({
           updateEventsApp={updateEventsApp}
           dataTime={dataHour}
           dataDay={dataDay}
+          pageUpdater={pageUpdater}
         />
       ) : null}
 
-      {/* Отрисовка события при клике на ячейку*/}
       {hourEvents.map(({ id, dateFrom, dateTo, title, description }) => {
         const eventStart = `${new Date(dateFrom).getHours()}:${formatMins(
           new Date(dateFrom).getMinutes()
@@ -58,9 +62,9 @@ const Hour = ({
         )}`;
 
         return (
-          <div key={Math.random()} onClick={(e) => e.stopPropagation()}>
+          <div key={dataHour} onClick={(e) => e.stopPropagation()}>
             <Event
-              key={id}
+              key={dataHour}
               id={id}
               height={(dateTo - dateFrom) / (1000 * 60)}
               marginTop={new Date(dateFrom).getMinutes()}
@@ -69,6 +73,7 @@ const Hour = ({
               description={description}
               deleteEvent={deleteEvent}
               updateEventsApp={updateEventsApp}
+              pageUpdater={pageUpdater}
             />
           </div>
         );

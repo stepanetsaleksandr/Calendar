@@ -13,6 +13,7 @@ const Calendar = ({
   deleteEvent,
   postNewEvent,
   updateEventsApp,
+  pageUpdater,
 }) => {
   const [calendarRender, setRender] = useState(false);
 
@@ -33,8 +34,9 @@ const Calendar = ({
             events={events}
             deleteEvent={deleteEvent}
             postNewEvent={postNewEvent}
-            calendarRender={setRender}
+            calendarRender={() => setRender()}
             updateEventsApp={updateEventsApp}
+            pageUpdater={pageUpdater}
           />
         </div>
       </div>

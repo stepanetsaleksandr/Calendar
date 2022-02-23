@@ -6,9 +6,10 @@ import {
   generateWeekRange,
   getNextWeek,
   getPreviousWeek,
-  getDateFunc,
-  getHoursFunc,
-  getMinutesFunc,
+  timeValidation,
+  dayValidation,
+  hoursValidation,
+  midnightValidation,
 } from "../src/utils/dateUtils.js";
 import {
   updateEvents,
@@ -36,16 +37,7 @@ const App = () => {
   };
 
   const deleteEventFromApp = (id) => {
-    const eventToDelete = events.find((event) => event.id === id);
-    if (
-      eventToDelete.dateFrom >= new Date().getTime() &&
-      eventToDelete.dateFrom - 15 * 60 * 1000 <= new Date().getTime()
-    ) {
-      alert(`Sorry, we can't cancel event in 15 minutes to start!`);
-    } else {
-      setEvents(events.filter((event) => event.id !== id));
-      deleteEvent(id).then(() => pageUpdater());
-    }
+    deleteEvent(id);
   };
 
   const postNewEventInApp = ({ dateFrom, dateTo, title, description }) => {
@@ -56,49 +48,23 @@ const App = () => {
       description: description,
     };
 
-    const timeValidation = () => {
-      const result = events.find(
-        (event) =>
-          getDateFunc(event.dateFrom) === getDateFunc(dateFrom) &&
-          ((event.dateFrom < dateFrom && event.dateTo > dateFrom) ||
-            (event.dateFrom < dateTo && event.dateTo > dateTo) ||
-            (dateFrom < event.dateFrom &&
-              dateTo > event.dateFrom &&
-              dateTo > event.dateTo))
-      );
-
-      if (result) {
-        return true;
+    switch (true) {
+      case timeValidation(events, dateTo, dateFrom):
+        alert(`Sorry, we can't shedule two events in one time!`);
+        break;
+      case hoursValidation(dateTo, dateFrom) > 6:
+        alert(`Sorry, event's longer than 6 hours are not allowed!`);
+        break;
+      case dayValidation(dateTo, dateFrom):
+        alert(`Sorry, each event should starts and ends in one day!`);
+        break;
+      case midnightValidation(dateFrom):
+        alert(`You can't start at 00:00! Try 00:15`);
+        break;
+      default: {
+        setEvents([...events, eventToPost]);
+        postNewEvent(eventToPost);
       }
-      return false;
-    };
-
-    const hoursValidation = (dateTo - dateFrom) / 1000 / 60 / 60;
-
-    const dayValidation = () => {
-      const dateToDay = dateTo / 1000 / 60 / 60;
-      const dateFromDay = dateFrom / 1000 / 60 / 60;
-
-      if (dateToDay < dateFromDay) {
-        return true;
-      }
-      return false;
-    };
-
-    const midnightValidation =
-      getHoursFunc(dateFrom) === 0 && getMinutesFunc(dateFrom) === 0;
-
-    if (timeValidation()) {
-      alert(`Sorry, we can't shedule two events in one time!`);
-    } else if (hoursValidation > 6) {
-      alert(`Sorry, event's longer than 6 hours are not allowed!`);
-    } else if (dayValidation()) {
-      alert(`Sorry, each event should starts and ends in one day!`);
-    } else if (midnightValidation) {
-      alert(`You can't start at 00:00! Try 00:15`);
-    } else {
-      setEvents([...events, eventToPost]);
-      postNewEvent(eventToPost).then(() => pageUpdater());
     }
   };
 
@@ -133,6 +99,7 @@ const App = () => {
         deleteEvent={deleteEventFromApp}
         postNewEvent={postNewEventInApp}
         updateEventsApp={updateEventsApp}
+        pageUpdater={pageUpdater}
       />
     </>
   );

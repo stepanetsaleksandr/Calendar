@@ -46,11 +46,7 @@ const Modal = ({ handleModalClose, postNewEvent }) => {
 
     const dateToVal = new Date(date);
     const dateTo = new Date(
-      dateToVal.setHours(
-        timeTo.slice(0, 2),
-        timeFromFixed(timeTo.slice(3, 5)),
-        0
-      )
+      dateToVal.setHours(timeTo.slice(0, 2), timeFromFixed(timeTo.slice(3, 5)))
     ).getTime();
 
     event.preventDefault();
