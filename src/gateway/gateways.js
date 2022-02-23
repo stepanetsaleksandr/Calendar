@@ -1,6 +1,6 @@
 const baseUrl = "https://61fcda0cf62e220017ce41b8.mockapi.io/api/events";
 
-export const updateEvents = () =>
+export const fetchEvents = () =>
   fetch(baseUrl).then((response) => {
     if (response.ok) {
       return response.json();

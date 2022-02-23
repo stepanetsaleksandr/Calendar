@@ -12,7 +12,7 @@ import {
   midnightValidation,
 } from "../src/utils/dateUtils.js";
 import {
-  updateEvents,
+  fetchEvents,
   deleteEvent,
   postNewEvent,
 } from "../src/gateway/gateways.js";
@@ -25,7 +25,7 @@ const App = () => {
   const [events, setEvents] = useState([]);
 
   const updateEventsApp = () =>
-    updateEvents().then((json) =>
+    fetchEvents().then((json) =>
       json.map((event) => {
         setEvents((result) => [...result, event]);
       })
@@ -80,7 +80,7 @@ const App = () => {
 
   const getCurrentWeekInApp = () => {
     setWeekStartDate(new Date());
-    updateEventsApp();
+    // updateEventsApp();
   };
 
   return (
